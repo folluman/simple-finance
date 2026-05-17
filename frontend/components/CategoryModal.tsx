@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api";
 
 interface CategoryModalProps {
   isOpen: boolean;
@@ -22,7 +22,7 @@ export default function CategoryModal({ isOpen, onClose, tipoGeralAtual }: Categ
   const [categoryToDelete, setCategoryToDelete] = useState<any | null>(null);
 
   const fetchCategorias = async () => {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/list`, { withCredentials: true });
+    const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/list`, { withCredentials: true });
     setCategorias(res.data);
   };
 
@@ -47,13 +47,13 @@ export default function CategoryModal({ isOpen, onClose, tipoGeralAtual }: Categ
 
     try {
       if (editingId) {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/${editingId}`, {
+        await api.put(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/${editingId}`, {
           category_name: categoryName,
           category_type: tipoGeralAtual.toLowerCase(),
           cor_hex: corHex
         }, { withCredentials: true });
       } else {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/post`, {
+        await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/post`, {
           category_name: categoryName,
           category_type: tipoGeralAtual.toLowerCase(),
           cor_hex: corHex
@@ -77,7 +77,7 @@ export default function CategoryModal({ isOpen, onClose, tipoGeralAtual }: Categ
     if (!categoryToDelete) return;
     
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/delete/${categoryToDelete._id}`, { withCredentials: true });
+      await api.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/delete/${categoryToDelete._id}`, { withCredentials: true });
       setCategoryToDelete(null);
       fetchCategorias();
     } catch (error) {

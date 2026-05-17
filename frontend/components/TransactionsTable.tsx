@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import axios from "axios";
+import api from "../api";
 import TransactionModal from "./TransactionModal";
 
 interface TransactionModalProps {
@@ -60,7 +60,7 @@ export default function TransactionsTable({ transacoesFiltradas, isLoading, onUp
   const executeDelete = async (deleteAll: boolean) => {
     if (!transactionToDelete) return;
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/${transactionToDelete._id}?deleteAll=${deleteAll}`, { 
+      await api.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/${transactionToDelete._id}?deleteAll=${deleteAll}`, { 
         withCredentials: true 
       });
       onUpdateData(); // Avisa a Home que apagou, para ela recalcular os cards!

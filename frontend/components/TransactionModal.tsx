@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import CategoryModal from "./CategoryModal";
-import axios from "axios";
+import api from "../api";
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
 
   const fetchCategorias = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/list`, { withCredentials: true });
+      const response = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/list`, { withCredentials: true });
       setCategorias(response.data);
     } catch (error) {
       console.error("Erro ao buscar categorias:", error);
@@ -133,11 +133,11 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
         };
         if (transactionToEdit) {
            // MODO EDIÇÃO: Rota PUT com o ID
-           await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/${transactionToEdit._id}`, payload, { withCredentials: true });
+           await api.put(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/${transactionToEdit._id}`, payload, { withCredentials: true });
            console.log("Editado com sucesso!");
         } else {
            // MODO CRIAÇÃO: Rota POST
-           await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/post`, payload, { withCredentials: true });
+           await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/post`, payload, { withCredentials: true });
            console.log("Criado com sucesso!");
         }
 
