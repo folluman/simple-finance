@@ -23,6 +23,12 @@ const criacaoContaLimiter = rateLimit({
   message: "Limite de criação de contas atingido para este IP."
 });
 
+const forgotPasswordLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: "Muitas tentativas de recuperação de senha. Tente novamente após 15 minutos."
+});
+
 const corsOptions = {
   origin: process.env.NODE_ENV == 'production' 
         ? process.env.FRONTEND_URL_PROD 
@@ -65,6 +71,7 @@ const transactionRoutes = require('./routes/transactions')
 
 app.use('/api/', limiterGeral);
 app.use('/api/users/signup', criacaoContaLimiter);
+app.use('/api/users/forgot-password', forgotPasswordLimiter);
 app.use('/api/users', userRoutes)
 app.use('/api/categories', categoryRoutes)
 app.use('/api/transactions', transactionRoutes)
