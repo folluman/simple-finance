@@ -22,7 +22,7 @@ export default function CategoryModal({ isOpen, onClose, tipoGeralAtual }: Categ
   const [categoryToDelete, setCategoryToDelete] = useState<any | null>(null);
 
   const fetchCategorias = async () => {
-    const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/list`);
+    const res = await api.get(`/api/categories/list`);
     setCategorias(res.data);
   };
 
@@ -47,13 +47,13 @@ export default function CategoryModal({ isOpen, onClose, tipoGeralAtual }: Categ
 
     try {
       if (editingId) {
-        await api.put(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/${editingId}`, {
+        await api.put(`/api/categories/${editingId}`, {
           category_name: categoryName,
           category_type: tipoGeralAtual.toLowerCase(),
           cor_hex: corHex
         });
       } else {
-        await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/post`, {
+        await api.post(`/api/categories/post`, {
           category_name: categoryName,
           category_type: tipoGeralAtual.toLowerCase(),
           cor_hex: corHex
@@ -77,7 +77,7 @@ export default function CategoryModal({ isOpen, onClose, tipoGeralAtual }: Categ
     if (!categoryToDelete) return;
     
     try {
-      await api.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/delete/${categoryToDelete._id}`);
+      await api.delete(`/api/categories/delete/${categoryToDelete._id}`);
       setCategoryToDelete(null);
       fetchCategorias();
     } catch (error) {

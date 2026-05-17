@@ -10,7 +10,7 @@ export default function sideMenu({ children }: { children: React.ReactNode }) {
   const handleLogout = async () => {
     try {
       await api.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/logout`,
+        `/api/users/logout`,
         {},
       );
 
