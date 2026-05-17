@@ -8,7 +8,9 @@ const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.NODEMAILER_USER,
         pass: process.env.NODEMAILER_PASSWORD
@@ -149,7 +151,6 @@ exports.user_logout_post = (req, res) => {
 
   res.status(200).json({ message: 'Logout realizado com sucesso!' })
 }
-
 
 exports.forgot_password_post = asyncHandler(async (req, res) => {
     const { email } = req.body;

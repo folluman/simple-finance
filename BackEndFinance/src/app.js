@@ -9,6 +9,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express()
 
+app.set('trust proxy', 1);
+
 const limiterGeral = rateLimit({
   windowMs: 15 * 60 * 1000, 
   max: 100, 
