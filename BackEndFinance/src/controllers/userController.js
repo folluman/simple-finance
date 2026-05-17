@@ -14,7 +14,12 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.NODEMAILER_USER,
         pass: process.env.NODEMAILER_PASSWORD
-    }
+    },
+    tls: {
+    rejectUnauthorized: false 
+  },
+  debug: true, 
+  logger: true
 });
 
 // MOSTRANDO A LISTA DE USUÁRIOS
