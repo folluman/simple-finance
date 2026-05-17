@@ -60,9 +60,7 @@ export default function TransactionsTable({ transacoesFiltradas, isLoading, onUp
   const executeDelete = async (deleteAll: boolean) => {
     if (!transactionToDelete) return;
     try {
-      await api.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/${transactionToDelete._id}?deleteAll=${deleteAll}`, { 
-        withCredentials: true 
-      });
+      await api.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/${transactionToDelete._id}?deleteAll=${deleteAll}`);
       onUpdateData(); // Avisa a Home que apagou, para ela recalcular os cards!
       closeDeleteModal();
     } catch (error) {
