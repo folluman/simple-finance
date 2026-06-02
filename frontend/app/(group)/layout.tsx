@@ -78,7 +78,7 @@ export default function sideMenu({ children }: { children: React.ReactNode }) {
 
         {/* MENU LATERAL ANIMADO */}
         <aside
-          className={`absolute top-0 left-0 w-64 h-full bg-primary-color-green flex flex-col p-6 shadow-2xl transition-transform duration-500 ease-out ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+          className={`absolute top-0 left-0 w-68 h-full bg-primary-color-green flex flex-col p-6 shadow-2xl transition-transform duration-500 ease-out ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <button
             onClick={closeMenu}
@@ -100,7 +100,7 @@ export default function sideMenu({ children }: { children: React.ReactNode }) {
             </svg>
           </button>
 
-          <div className="flex items-center gap-2 mb-12 mt-4">
+          <div className="flex items-center gap-2 mb-10 mt-12">
             <span className="text-2xl text-secondary-color-green font-semibold">
               Simple<span className="text-white">Finance</span>
             </span>
@@ -144,7 +144,7 @@ export default function sideMenu({ children }: { children: React.ReactNode }) {
 
       {/* MENU LATERAL DESKTOP */}
 
-      <aside className="hidden w-52 bg-primary-color-green flex-col p-6 shadow-xl z-10 lg:flex xl:w-62">
+      <aside className="hidden w-52 bg-primary-color-green flex-col p-6 shadow-xl z-10 lg:flex xl:w-66">
         <div className="flex items-center gap-2 mb-12 mt-4">
           <span className="text-2xl text-secondary-color-green font-semibold">
             Simple<span className="text-white">Finance</span>

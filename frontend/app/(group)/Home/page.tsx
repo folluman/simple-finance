@@ -212,18 +212,18 @@ export default function Home() {
 
   return (
     <div className="w-full p-4 flex flex-col gap-6 md:p-8">
-      <header className="flex flex-col justify-between items-start gap-4 bg-tertiary-color-green p-5 rounded-2xl w-full shadow-md md:flex-row md:items-center md:p-6">
+      <header className="flex flex-col justify-between items-start gap-4 bg-line-gray p-5 rounded-2xl w-full shadow-md md:flex-row md:items-center md:p-6">
         <div className="flex flex-col gap-1 md:w-3/6">
           <span className="text-primary-color-green font-semibold text-xl md:text-2xl my-2">
-            Bem-vindo,{" "}
-            <span className="text-secondary-color-green">
-              {userName.toUpperCase()}
+            Bem-vindo(a),{" "}
+            <span className="text-gradient-green">
+              {userName.charAt(0).toUpperCase() + userName.slice(1)}
             </span>
             .
           </span>
           <span className="flex gap-2 items-center text-primary-color-green font-semibold text-sm md:text-base">
             {getTextoReceita()}{" "}
-            <span className="text-secondary-color-green ml-1">
+            <span className="text-gradient-green ml-1">
               {formatarMoeda(totalDisponivel)}
             </span>
           </span>
@@ -246,13 +246,13 @@ export default function Home() {
             Filtros:
           </span>
 
-          <div className="relative flex-1 min-w-[140px]">
+          <div className="relative flex-1 min-w-35">
             <select
               value={filtroTipoGeral}
               onChange={handleMudancaTipoGeral}
               className="appearance-none border border-line-gray text-primary-color-green font-semibold rounded-xl px-4 py-2 pr-7 outline-none cursor-pointer w-full focus:border-primary-color transition-colors text-sm"
             >
-              <option value="">Transações</option>
+              <option value="" disabled>Transações</option>
               <option value="receita">Receitas</option>
               <option value="despesa">Despesas</option>
             </select>
@@ -265,14 +265,14 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative flex-1 min-w-[140px]">
+          <div className="relative flex-1 min-w-35">
             <select
               value={filtroTipoPagamento}
               onChange={(e) => setFiltroTipoPagamento(e.target.value)}
               disabled={filtroTipoGeral === "receita"}
               className="appearance-none border border-line-gray text-primary-color-green font-semibold rounded-xl px-4 py-2 pr-7 outline-none cursor-pointer w-full focus:border-primary-color transition-colors text-sm disabled:bg-gray-100 disabled:text-gray-400"
             >
-              <option value="">Pagamentos</option>
+              <option value="" disabled>Pagamentos</option>
               <option value="À vista">À vista</option>
               <option value="Parcelado">Parcelado</option>
             </select>
@@ -285,13 +285,13 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative flex-1 min-w-[100px]">
+          <div className="relative flex-1 min-w-25">
             <select
               value={filtroAno}
               onChange={(e) => setFiltroAno(e.target.value)}
               className="appearance-none border border-line-gray text-primary-color-green font-semibold rounded-xl px-4 py-2 pr-7 outline-none cursor-pointer w-full focus:border-primary-color transition-colors text-sm"
             >
-              <option value="">Ano</option>
+              <option value="" disabled>Ano</option>
               {anosDisponiveis.map((ano) => (
                 <option key={ano} value={ano}>
                   {ano}
@@ -307,13 +307,13 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative flex-1 min-w-[120px]">
+          <div className="relative flex-1 min-w-30">
             <select
               value={filtroMes}
               onChange={(e) => setFiltroMes(e.target.value)}
               className="appearance-none border border-line-gray text-primary-color-green font-semibold rounded-lg px-4 py-2 pr-7 bg-transparent outline-none cursor-pointer w-full focus:border-primary-color transition-colors text-sm"
             >
-              <option value="">Mês</option>
+              <option value="" disabled>Mês</option>
               {mesesDisponiveis.map((mesIndex) => (
                 <option key={mesIndex} value={mesIndex}>
                   {NOMES_MESES[mesIndex]}
@@ -329,7 +329,7 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative flex-1 min-w-[160px]">
+          <div className="relative flex-1 min-w-40">
             <select
               value={filtroCategoria}
               onChange={handleMudancaCategoria}

@@ -41,7 +41,7 @@ export default function CardFinance({ icon, editButton, border, title, value, bg
           
           <div className="flex flex-col items-end gap-2 text-right">
             {saldoAnteriorAzul && (
-              <span className="text-blue-500 font-bold text-xs md:text-sm">
+              <span className="text-gradient-green font-bold text-xs md:text-sm">
                 {saldoAnteriorAzul}
               </span>
             )}
