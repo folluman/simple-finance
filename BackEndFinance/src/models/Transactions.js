@@ -41,7 +41,7 @@ let TransactionsSchema = new Schema({
 })
 
 TransactionSchema.plugin(mongooseFieldEncryption, {
-    fields: ["value", "description"],
+    fields: ["value", "descript"],
     secret: process.env.ENCRYPTION_KEY,
 });
 
