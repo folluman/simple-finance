@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongooseFieldEncryption = require("mongoose-field-encryption").fieldEncryption;
 
 let Schema = mongoose.Schema
 
@@ -38,5 +39,10 @@ let TransactionsSchema = new Schema({
         default: Date.now
     }
 })
+
+TransactionSchema.plugin(mongooseFieldEncryption, {
+    fields: ["value", "description"],
+    secret: process.env.ENCRYPTION_KEY,
+});
 
 module.exports = mongoose.model('Transaction', TransactionsSchema)

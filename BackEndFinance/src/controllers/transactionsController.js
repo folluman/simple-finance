@@ -75,7 +75,7 @@ exports.transaction_create_post = [
                 });
             }
 
-            const savedTransactions = await Transaction.insertMany(parcelasToSave);
+            const savedTransactions = await Transaction.create(parcelasToSave);
             return res.status(201).json(savedTransactions);
         }
     })
@@ -83,18 +83,30 @@ exports.transaction_create_post = [
 
 // CONTROLLER PARA LISTAR AS TRANSAÇÕES DO USUÁRIO
 exports.transaction_list_get = asyncHandler(async (req, res) => {
-    const transactions = await Transaction.find({ user_id: req.userId })
-        .populate('category_id', 'category_name cor_hex')
-        .sort({ transaction_date: -1 })
-        .exec();
+    try {
 
-    res.status(200).json(transactions);
+        const transactions = await Transaction.find({ user_id: req.userId })
+
+            .populate('category_id', 'category_name cor_hex')
+            .sort({ transaction_date: -1 })
+            .exec();
+
+        transactions.forEach(t => {
+            t.decryptFieldsSync();
+        })
+
+        res.status(200).json(transactions);
+    }
+
+    catch (error) {
+        res.status(500).json({ error: "Erro ao buscar transações." })
+    }
 })
 
 // ATUALIZAR TRANSAÇÃO
-exports.transaction_update_put = asyncHandler(async(req, res) => {
+exports.transaction_update_put = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    
+
     const transaction = await Transaction.findOneAndUpdate(
         { _id: id, user_id: req.userId },
         req.body,
@@ -109,7 +121,7 @@ exports.transaction_update_put = asyncHandler(async(req, res) => {
 });
 
 // DELETAR UMA TRANSAÇÃO
-exports.transaction_delete = asyncHandler(async(req, res) => {
+exports.transaction_delete = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { deleteAll } = req.query;
 
