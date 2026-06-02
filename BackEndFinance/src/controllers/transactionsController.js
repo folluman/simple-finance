@@ -17,7 +17,7 @@ exports.transaction_create_post = [
 
     body('transaction_date')
         .optional({ checkFalsy: true })
-        .isISO8601().withMessage('Data inválida.')
+        .isISO8601().withMessage('Dados inválidos.')
         .toDate(),
 
     body('descript')
