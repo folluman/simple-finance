@@ -84,24 +84,31 @@ exports.transaction_create_post = [
 // CONTROLLER PARA LISTAR AS TRANSAÇÕES DO USUÁRIO
 exports.transaction_list_get = asyncHandler(async (req, res) => {
     try {
-
         const transactions = await Transaction.find({ user_id: req.userId })
-
             .populate('category_id', 'category_name cor_hex')
             .sort({ transaction_date: -1 })
             .exec();
 
-        transactions.forEach(t => {
-            t.decryptFieldsSync();
-        })
-
-        res.status(200).json(transactions);
+        const transacoesLimpas = transactions.map(t => {
+            // DESCRIPTOGRAFIA
+            t.decryptFieldsSync(); 
+            
+            // CONVERTE O DOCUMENTO PARA UM OBJETO JS PURO
+            const obj = t.toObject(); 
+            
+            // LIMPANDO A SUJEIRO DA CRIPTOGRAFIA
+            delete obj.__enc_value;
+            delete obj.__enc_value_d;
+            delete obj.__enc_descript;
+            
+            return obj;
+        });
+        res.status(200).json(transacoesLimpas);
     }
-
     catch (error) {
-        res.status(500).json({ error: "Erro ao buscar transações." })
+        res.status(500).json({error : "Erro ao buscar transações."})
     }
-})
+});
 
 // ATUALIZAR TRANSAÇÃO
 exports.transaction_update_put = asyncHandler(async (req, res) => {
