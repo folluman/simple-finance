@@ -35,6 +35,10 @@ exports.transaction_create_post = [
         }
         const { value, category_id, type, transaction_date, descript, payment_method, total_installments } = req.body;
 
+        console.log("=== NOVA REQUISIÇÃO CHEGANDO ===");
+        console.log("DADOS:", req.body);
+        console.log("TIPO DO VALOR:", typeof req.body.value);
+
         if (payment_method !== 'Parcelado') {
             const transaction = new Transaction({
                 user_id: req.userId,
@@ -91,22 +95,22 @@ exports.transaction_list_get = asyncHandler(async (req, res) => {
 
         const transacoesLimpas = transactions.map(t => {
             // DESCRIPTOGRAFIA
-            t.decryptFieldsSync(); 
-            
+            t.decryptFieldsSync();
+
             // CONVERTE O DOCUMENTO PARA UM OBJETO JS PURO
-            const obj = t.toObject(); 
-            
+            const obj = t.toObject();
+
             // LIMPANDO A SUJEIRO DA CRIPTOGRAFIA
             delete obj.__enc_value;
             delete obj.__enc_value_d;
             delete obj.__enc_descript;
-            
+
             return obj;
         });
         res.status(200).json(transacoesLimpas);
     }
     catch (error) {
-        res.status(500).json({error : "Erro ao buscar transações."})
+        res.status(500).json({ error: "Erro ao buscar transações." })
     }
 });
 
@@ -114,15 +118,15 @@ exports.transaction_list_get = asyncHandler(async (req, res) => {
 exports.transaction_update_put = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const transaction = await Transaction.findOneAndUpdate(
-        { _id: id, user_id: req.userId },
-        req.body,
-        { new: true, runValidators: true }
-    );
+    const transaction = await Transaction.findOne({ _id: id, user_id: req.userId });
 
     if (!transaction) {
         return res.status(404).json({ error: 'Transação não encontrada ou você não tem permissão.' });
     }
+
+    Object.assign(transaction, req.body);
+
+    await transaction.save();
 
     res.status(200).json(transaction);
 });
