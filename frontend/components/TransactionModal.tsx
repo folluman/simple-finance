@@ -133,7 +133,7 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
           total_installments: tipoPagamento === "Parcelado" ? parseInt(qtdParcelas, 10) : 1
         };
 
-        const SECRET_KEY = process.env.KEY_CRYPTO as string
+        const SECRET_KEY = process.env.NEXT_PUBLIC_KEY_CRYPTO as string
         const payloadCriptografado = CryptoJS.AES.encrypt(JSON.stringify(payload), SECRET_KEY).toString();
 
         if (transactionToEdit) {

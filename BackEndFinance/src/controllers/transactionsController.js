@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator')
 
 // CONTROLLER PARA CRIAR NOVA TRANSAÇÃO FEITA PELO USUÁRIO
 exports.transaction_create_post = [
-    // O MIDDLEWARE DE DESCRIPTOGRAFIA (Abre o pacote ANTES de tudo)
+    // Middleware para abrir o pacote antes de validar
     (req, res, next) => {
         try {
             const SECRET_KEY = process.env.ENCRYPTION_KEY;
@@ -20,6 +20,7 @@ exports.transaction_create_post = [
             return res.status(400).json({ error: "Falha ao descriptografar os dados da requisição." });
         }
     },
+
     body('value')
         .isNumeric().withMessage('O valor deve ser um número.')
         .notEmpty().withMessage('O valor é obrigatório.'),
@@ -47,13 +48,13 @@ exports.transaction_create_post = [
     asyncHandler(async (req, res) => {
         const errors = validationResult(req);
 
-        const SECRET_KEY = process.env.ENCRYPTION_KEY;
-
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: 'Erro de validação', detalhes: errors.array() });
         }
+        
         const { value, category_id, type, transaction_date, descript, payment_method, total_installments } = req.body;
 
+        // Salva transação única (à vista)
         if (payment_method !== 'Parcelado') {
             const transaction = new Transaction({
                 user_id: req.userId,
@@ -68,15 +69,13 @@ exports.transaction_create_post = [
             return res.status(201).json(transaction);
         }
 
+        // Salva transações parceladas (em lote)
         if (payment_method === 'Parcelado' && total_installments > 1) {
             const parcelasToSave = [];
-
             const baseDate = new Date(transaction_date);
 
             for (let i = 1; i <= total_installments; i++) {
-
                 const dateForThisInstallment = new Date(baseDate);
-
                 dateForThisInstallment.setMonth(baseDate.getMonth() + (i - 1));
 
                 parcelasToSave.push({
@@ -93,12 +92,6 @@ exports.transaction_create_post = [
                     }
                 });
             }
-
-
-            const bytes = CryptoJS.AES.decrypt(req.body.data, SECRET_KEY);
-            const payloadAberto = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-            req.body = payloadAberto;
 
             const savedTransactions = await Transaction.create(parcelasToSave);
             return res.status(201).json(savedTransactions);
