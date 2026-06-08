@@ -4,6 +4,22 @@ const { body, validationResult } = require('express-validator')
 
 // CONTROLLER PARA CRIAR NOVA TRANSAÇÃO FEITA PELO USUÁRIO
 exports.transaction_create_post = [
+    // O MIDDLEWARE DE DESCRIPTOGRAFIA (Abre o pacote ANTES de tudo)
+    (req, res, next) => {
+        try {
+            const SECRET_KEY = process.env.ENCRYPTION_KEY;
+            
+            if (req.body.data) {
+                const bytes = CryptoJS.AES.decrypt(req.body.data, SECRET_KEY);
+                const payloadAberto = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+                
+                req.body = payloadAberto; 
+            }
+            next();
+        } catch (error) {
+            return res.status(400).json({ error: "Falha ao descriptografar os dados da requisição." });
+        }
+    },
     body('value')
         .isNumeric().withMessage('O valor deve ser um número.')
         .notEmpty().withMessage('O valor é obrigatório.'),
@@ -30,14 +46,13 @@ exports.transaction_create_post = [
 
     asyncHandler(async (req, res) => {
         const errors = validationResult(req);
+
+        const SECRET_KEY = process.env.ENCRYPTION_KEY;
+
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: 'Erro de validação', detalhes: errors.array() });
         }
         const { value, category_id, type, transaction_date, descript, payment_method, total_installments } = req.body;
-
-        console.log("=== NOVA REQUISIÇÃO CHEGANDO ===");
-        console.log("DADOS:", req.body);
-        console.log("TIPO DO VALOR:", typeof req.body.value);
 
         if (payment_method !== 'Parcelado') {
             const transaction = new Transaction({
@@ -78,6 +93,12 @@ exports.transaction_create_post = [
                     }
                 });
             }
+
+
+            const bytes = CryptoJS.AES.decrypt(req.body.data, SECRET_KEY);
+            const payloadAberto = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+            req.body = payloadAberto;
 
             const savedTransactions = await Transaction.create(parcelasToSave);
             return res.status(201).json(savedTransactions);

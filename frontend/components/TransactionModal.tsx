@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import CategoryModal from "./CategoryModal";
 import api from "../api";
+import CryptoJS from 'crypto-js';
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -131,13 +132,17 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
           payment_method: tipoGeral === "Despesa" ? tipoPagamento : undefined,
           total_installments: tipoPagamento === "Parcelado" ? parseInt(qtdParcelas, 10) : 1
         };
+
+        const SECRET_KEY = process.env.KEY_CRYPTO as string
+        const payloadCriptografado = CryptoJS.AES.encrypt(JSON.stringify(payload), SECRET_KEY).toString();
+
         if (transactionToEdit) {
            // MODO EDIÇÃO: Rota PUT com o ID
-           await api.put(`/api/transactions/${transactionToEdit._id}`, payload);
+           await api.put(`/api/transactions/${transactionToEdit._id}`,  { data: payloadCriptografado });
            console.log("Editado com sucesso!");
         } else {
            // MODO CRIAÇÃO: Rota POST
-           await api.post(`/api/transactions/post`, payload);
+           await api.post(`/api/transactions/post`, { data: payloadCriptografado });
            console.log("Criado com sucesso!");
         }
 
