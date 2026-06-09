@@ -1,23 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // /* config options here */
-  //   allowedDevOrigins: [
-  //   "169.254.83.107",
-  //   "localhost:3000"
-  // ],
+  async rewrites() {
+    const isDev = process.env.NODE_ENV === 'development';
 
-
-async rewrites() {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://tcc-finance.onrender.com/api/:path*', 
+        destination: isDev 
+          ? 'http://localhost:3001/api/:path*' 
+          : 'https://simple-finance-wenu.onrender.com/api/:path*', 
       },
     ]
   },
 };
-
-
 
 export default nextConfig;

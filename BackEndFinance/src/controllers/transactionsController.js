@@ -5,24 +5,8 @@ const { body, validationResult } = require('express-validator')
 // CONTROLLER PARA CRIAR NOVA TRANSAÇÃO FEITA PELO USUÁRIO
 exports.transaction_create_post = [
     // Middleware para abrir o pacote antes de validar
-    (req, res, next) => {
-        try {
-            const SECRET_KEY = process.env.ENCRYPTION_KEY;
-            
-            if (req.body.data) {
-                const bytes = CryptoJS.AES.decrypt(req.body.data, SECRET_KEY);
-                const payloadAberto = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-                
-                req.body = payloadAberto; 
-            }
-            next();
-        } catch (error) {
-            return res.status(400).json({ error: "Falha ao descriptografar os dados da requisição." });
-        }
-    },
-
     body('value')
-        .isNumeric().withMessage('O valor deve ser um número.')
+        .isFloat().withMessage('O valor deve ser um número.')
         .notEmpty().withMessage('O valor é obrigatório.'),
 
     body('category_id')
@@ -51,7 +35,7 @@ exports.transaction_create_post = [
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: 'Erro de validação', detalhes: errors.array() });
         }
-        
+
         const { value, category_id, type, transaction_date, descript, payment_method, total_installments } = req.body;
 
         // Salva transação única (à vista)

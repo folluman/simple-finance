@@ -21,7 +21,7 @@ let TransactionsSchema = new Schema({
         type: String,
         // FUNÇÃO PARA SOMENTE TRANSAÇÕES QUE SÃO DESPESAS
         required: function () { return this.type === 'despesa'; },
-        enum: ['À vista', 'Parcelado']
+        enum: ['vista', 'Parcelado']
     },
 
     installments: {

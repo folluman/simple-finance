@@ -20,7 +20,7 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [tipoGeral, setTipoGeral] = useState<"Receita" | "Despesa">("Despesa");
   const [tipoDespesa, setTipoDespesa] = useState("");
-  const [tipoPagamento, setTipoPagamento] = useState("À vista");
+  const [tipoPagamento, setTipoPagamento] = useState("vista");
   const [categorias, setCategorias] = useState<CategoriaDoBanco[]>([]);
 
   const [nome, setNome] = useState("");
@@ -49,7 +49,7 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
         // MODO EDIÇÃO: Preenche os dados
         setTipoGeral(transactionToEdit.type === "receita" ? "Receita" : "Despesa");
         setTipoDespesa(transactionToEdit.category_id?._id || "");
-        setTipoPagamento(transactionToEdit.payment_method || "À vista");
+        setTipoPagamento(transactionToEdit.payment_method || "vista");
         
         // Separa Nome e Comentário
         const partesTexto = transactionToEdit.descript ? transactionToEdit.descript.split(" - ") : [""];
@@ -75,7 +75,7 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
       } else {
         setTipoGeral("Despesa");
         setTipoDespesa("");
-        setTipoPagamento("À vista");
+        setTipoPagamento("vista");
         setNome("");
         setData("");
         setValor("");
@@ -133,16 +133,12 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
           total_installments: tipoPagamento === "Parcelado" ? parseInt(qtdParcelas, 10) : 1
         };
 
-        const SECRET_KEY = process.env.NEXT_PUBLIC_KEY_CRYPTO as string
-        const payloadCriptografado = CryptoJS.AES.encrypt(JSON.stringify(payload), SECRET_KEY).toString();
-
+        // Envia o payload DIRETO, sem envelopar em { data: ... }
         if (transactionToEdit) {
-           // MODO EDIÇÃO: Rota PUT com o ID
-           await api.put(`/api/transactions/${transactionToEdit._id}`,  { data: payloadCriptografado });
+           await api.put(`/api/transactions/${transactionToEdit._id}`, payload);
            console.log("Editado com sucesso!");
         } else {
-           // MODO CRIAÇÃO: Rota POST
-           await api.post(`/api/transactions/post`, { data: payloadCriptografado });
+           await api.post(`/api/transactions/post`, payload);
            console.log("Criado com sucesso!");
         }
 
@@ -192,10 +188,10 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
             </div>
           </div>
 
-          {/* Opção À Vista / Parcelado */}
+          {/* Opção vista / Parcelado */}
           {tipoGeral === "Despesa" && (
             <div className="flex gap-4 p-1 bg-line-gray rounded-xl mt-2">
-              <button type="button" onClick={() => setTipoPagamento("À vista")} className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${tipoPagamento === "À vista" ? "bg-white text-primary-color-green shadow-sm" : "text-gray-500"}`}>À vista</button>
+              <button type="button" onClick={() => setTipoPagamento("vista")} className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${tipoPagamento === "vista" ? "bg-white text-primary-color-green shadow-sm" : "text-gray-500"}`}>vista</button>
               <button type="button" onClick={() => setTipoPagamento("Parcelado")} className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${tipoPagamento === "Parcelado" ? "bg-white text-primary-color-green shadow-sm" : "text-gray-500"}`}>Parcelado</button>
             </div>
           )}
