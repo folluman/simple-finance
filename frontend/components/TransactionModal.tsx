@@ -20,7 +20,7 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [tipoGeral, setTipoGeral] = useState<"Receita" | "Despesa">("Despesa");
   const [tipoDespesa, setTipoDespesa] = useState("");
-  const [tipoPagamento, setTipoPagamento] = useState("vista");
+  const [tipoPagamento, setTipoPagamento] = useState("À Vista");
   const [categorias, setCategorias] = useState<CategoriaDoBanco[]>([]);
 
   const [nome, setNome] = useState("");
@@ -49,7 +49,7 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
         // MODO EDIÇÃO: Preenche os dados
         setTipoGeral(transactionToEdit.type === "receita" ? "Receita" : "Despesa");
         setTipoDespesa(transactionToEdit.category_id?._id || "");
-        setTipoPagamento(transactionToEdit.payment_method || "vista");
+        setTipoPagamento(transactionToEdit.payment_method || "À Vista");
         
         // Separa Nome e Comentário
         const partesTexto = transactionToEdit.descript ? transactionToEdit.descript.split(" - ") : [""];
@@ -75,7 +75,7 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
       } else {
         setTipoGeral("Despesa");
         setTipoDespesa("");
-        setTipoPagamento("vista");
+        setTipoPagamento("À Vista");
         setNome("");
         setData("");
         setValor("");
@@ -188,10 +188,10 @@ export default function TransactionModal({ isOpen, onClose, transactionToEdit, o
             </div>
           </div>
 
-          {/* Opção vista / Parcelado */}
+          {/* Opção À Vista / Parcelado */}
           {tipoGeral === "Despesa" && (
             <div className="flex gap-4 p-1 bg-line-gray rounded-xl mt-2">
-              <button type="button" onClick={() => setTipoPagamento("vista")} className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${tipoPagamento === "vista" ? "bg-white text-primary-color-green shadow-sm" : "text-gray-500"}`}>vista</button>
+              <button type="button" onClick={() => setTipoPagamento("À Vista")} className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${tipoPagamento === "À Vista" ? "bg-white text-primary-color-green shadow-sm" : "text-gray-500"}`}>À Vista</button>
               <button type="button" onClick={() => setTipoPagamento("Parcelado")} className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${tipoPagamento === "Parcelado" ? "bg-white text-primary-color-green shadow-sm" : "text-gray-500"}`}>Parcelado</button>
             </div>
           )}
