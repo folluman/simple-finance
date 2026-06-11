@@ -50,7 +50,7 @@ export default function PlatformModal({ isOpen, onClose }: PlatformModalProps) {
 
     try {
       const payload = {
-        plataform_name: platformName, // Usando a grafia exata do seu diagrama
+        platform_name: platformName,
         cor_hex: corHex
       };
 
@@ -94,7 +94,7 @@ export default function PlatformModal({ isOpen, onClose }: PlatformModalProps) {
       <div className="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
         <button onClick={onClose} className="absolute top-4 right-5 text-gray-400 hover:text-gray-600 transition-colors text-xl font-bold">✕</button>
         
-        <h2 className="text-xl font-bold text-primary-color-green mb-4">Gerenciar Plataformas</h2>
+        <h2 className="text-xl font-bold text-primary-color-green mb-4">Gerenciar Plataformas de Investimentos</h2>
 
         {/* Formulário de Criação / Edição */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-6 bg-line-gray/30 p-4 rounded-2xl border border-line-gray">
@@ -103,7 +103,7 @@ export default function PlatformModal({ isOpen, onClose }: PlatformModalProps) {
           </label>
           <input 
             type="text" 
-            placeholder="Nome da plataforma" 
+            placeholder="Nome da plataforma de investimento" 
             value={platformName}
             onChange={(e) => setPlatformName(e.target.value)}
             className="p-3 rounded-xl border border-line-gray outline-none focus:ring-1 focus:ring-primary-color-green text-sm"
@@ -130,17 +130,17 @@ export default function PlatformModal({ isOpen, onClose }: PlatformModalProps) {
 
         {/* Listagem para Editar/Excluir */}
         <div className="max-h-56 overflow-y-auto custom-scrollbar pr-2">
-          <p className="text-xs font-bold text-gray-400 uppercase mb-2">Suas Plataformas</p>
+          <p className="text-xs font-bold text-gray-400 uppercase mb-2">Suas Plataformas de Investimentos</p>
           
           {plataformas.length === 0 && (
-             <p className="text-sm text-gray-500 text-center py-4">Nenhuma plataforma encontrada.</p>
+             <p className="text-sm text-gray-500 text-center py-4">Nenhuma plataforma de investimento encontrada.</p>
           )}
 
           {plataformas.map(plat => (
             <div key={plat._id} className="flex items-center justify-between p-3 border-b border-line-gray last:border-0 hover:bg-zinc-50 rounded-lg transition-colors">
               <div className="flex items-center gap-3">
                 <div className="w-3.5 h-3.5 rounded-full shadow-sm" style={{ backgroundColor: plat.cor_hex }}></div>
-                <span className="text-sm font-medium text-text-login">{plat.plataform_name}</span>
+                <span className="text-sm font-medium text-text-login">{plat.platform_name}</span>
               </div>
               <div className="flex gap-4">
                 <button type="button" onClick={() => handleEditClick(plat)} className="text-blue-500 hover:text-blue-700 transition-colors" title="Editar">✏️</button>
@@ -166,7 +166,7 @@ export default function PlatformModal({ isOpen, onClose }: PlatformModalProps) {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4 text-2xl">🗑️</div>
             <h3 className="text-xl font-bold text-primary-color-green mb-2">Excluir plataforma?</h3>
             <p className="text-sm text-text-login mb-6 font-medium">
-              Certeza que você quer excluir a plataforma <strong className="text-primary-color-green">"{platformToDelete.plataform_name}"</strong>?<br/><br/>
+              Certeza que você quer excluir a plataforma de investimento?<strong className="text-primary-color-green">"{platformToDelete.platform_name}"</strong>?<br/><br/>
               <span className="text-gray-500 text-xs">Os investimentos vinculados a ela ficarão sem plataforma.</span>
             </p>
             <div className="flex gap-3 w-full">
