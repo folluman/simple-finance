@@ -7,7 +7,7 @@ const PlatformSchema = new Schema({
         ref: 'User', 
         required: true 
     },
-    plataform_name: { 
+    platform_name: { 
         type: String, 
         required: true,
         trim: true,

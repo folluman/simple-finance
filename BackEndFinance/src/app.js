@@ -68,7 +68,8 @@ mongoose.connect(process.env.MONGO_URL)
 const userRoutes = require('./routes/users')
 const categoryRoutes = require('./routes/categories')
 const transactionRoutes = require('./routes/transactions')
-const investmentRouter = require('./routes/investment')
+const investmentRoutes = require('./routes/investment')
+const platformRoutes = require('./routes/platform')
 
 app.use('/api/', limiterGeral);
 app.use('/api/users/signup', criacaoContaLimiter);
@@ -76,7 +77,8 @@ app.use('/api/users/forgot-password', forgotPasswordLimiter);
 app.use('/api/users', userRoutes)
 app.use('/api/categories', categoryRoutes)
 app.use('/api/transactions', transactionRoutes)
-app.use('/api/investment', investmentRouter)
+app.use('/api/investment', investmentRoutes)
+app.use('/api/platforms', platformRoutes)
 
 
 const PORT = process.env.PORT || 3001;

@@ -9,7 +9,7 @@ const InvestmentSchema = new Schema({
         ref: 'User', 
         required: true 
     },
-    plataform_id: { 
+    platform_id: { 
         type: Schema.Types.ObjectId, 
         ref: 'Platform', 
         required: true 
