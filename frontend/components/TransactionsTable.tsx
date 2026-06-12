@@ -112,7 +112,7 @@ export default function TransactionsTable({ transacoesFiltradas, isLoading, onUp
                     <td className={`py-4 px-2 font-bold text-sm ${item.type === 'receita' ? 'text-primary-color-green' : 'text-text-login'}`}>
                       {item.type === 'receita' ? '+' : ''} {formatarMoeda(item.value)}
                     </td>
-                    <td className="py-4 px-2 text-text-login font-medium text-sm text-gray-600">{textoPagamento}</td>
+                    <td className="py-4 px-2 text-text-login font-medium text-sm">{textoPagamento}</td>
                     <td className="py-4 px-2">
                       <span className={`px-2 py-1 rounded-md text-xs font-bold uppercase ${item.type === 'receita' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{item.type}</span>
                     </td>
@@ -148,7 +148,7 @@ export default function TransactionsTable({ transacoesFiltradas, isLoading, onUp
 
       {/* POP-UPS DE EXCLUSÃO (Idênticos aos anteriores) */}
       {transactionToDelete && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fade-in">
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fade-in">
           <div className="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl relative flex flex-col items-center text-center">
             
             <button onClick={closeDeleteModal} className="absolute top-4 right-5 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
