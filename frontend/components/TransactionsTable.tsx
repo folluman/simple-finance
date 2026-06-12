@@ -76,7 +76,7 @@ export default function TransactionsTable({ transacoesFiltradas, isLoading, onUp
     <div className="w-full bg-white rounded-2xl border-2 border-line-gray p-4 shadow-md flex flex-col gap-6 md:p-6 xl:h-full relative">
       
       <div className="flex flex-col justify-center items-center gap-4 lg:flex-row lg:justify-between xl:items-center">
-        <h2 className="text-primary-color-green font-bold text-xl md:text-2xl">Lançamentos da competência</h2>
+        <h2 className="text-primary-color-green font-bold text-xl md:text-2xl">Transações</h2>
       </div>
 
       <div className="flex-1 min-h-0 overflow-auto w-full border-2 border-solid border-line-gray px-4 pb-4 rounded-2xl custom-scrollbar">

@@ -239,7 +239,7 @@ export default function Login() {
 
               <form onSubmit={handleSubmit} className="flex flex-col mt-6 w-full lg:mt-8">
                 <div className="flex flex-col mb-3">
-                  <label className="text-primary-color-green font-medium text-sm">Username</label>
+                  <label className="text-primary-color-green font-medium text-sm">Nome</label>
                   <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Informe seu nome" className={`${baseInputClass} ${errors.nome ? errorInputClass : defaultInputClass}`} />
                 </div>
                 <div className="flex flex-col mb-3">
